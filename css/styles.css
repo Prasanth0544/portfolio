@@ -1,25 +1,35 @@
 /* ========================================
    CSS Variables - Classic Professional Theme
    Minimal, clean design with white backgrounds
+   Subtle, refined color palette
    ======================================== */
 :root {
-    /* Colors - Clean & Professional */
-    --color-primary: #1a1a1a;
-    /* Near black for text */
-    --color-secondary: #4a4a4a;
-    /* Dark gray */
-    --color-accent: #2563eb;
-    /* Professional blue - used sparingly */
+    /* Colors - Clean & Professional with Subtle Accents */
+    --color-primary: #334155;
+    /* Refined slate gray - professional and calm */
+    --color-secondary: #64748b;
+    /* Soft slate - elegant secondary */
+    --color-accent: #0d9488;
+    /* Teal - matches cyan background theme */
 
-    --color-text: #1a1a1a;
-    --color-text-light: #555555;
-    --color-text-muted: #888888;
+    --color-text: #1e293b;
+    /* Deep slate for primary text */
+    --color-text-light: #475569;
+    /* Medium slate for secondary text */
+    --color-text-muted: #94a3b8;
+    /* Light slate for muted text */
 
-    --color-bg: #ffffff;
-    --color-bg-alt: #f8f9fa;
+    --color-bg: #e0f7fa;
+    /* Light cyan - more visible */
+    --color-bg-alt: #ccfbf1;
+    /* Teal tint for sections */
     --color-bg-card: #ffffff;
+    /* Cards stay white */
 
-    --color-border: #e5e5e5;
+    --color-border: #99f6e4;
+    /* Soft teal border - matches theme */
+    --color-success: #10b981;
+    /* Subtle emerald for links and success states */
 
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -37,6 +47,10 @@
     /* Border Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
+
+    /* Transitions */
+    --transition-fast: 200ms ease;
+    --transition-base: 300ms ease;
 
     /* Container */
     --container-max: 1100px;
@@ -105,8 +119,10 @@ button {
 .section-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal - refined and subtle */
     margin-bottom: var(--spacing-xl);
+    letter-spacing: 0.02em;
 }
 
 /* Buttons */
@@ -118,6 +134,7 @@ button {
     font-size: 0.9rem;
     font-weight: 500;
     border-radius: var(--radius-sm);
+    transition: all var(--transition-base);
 }
 
 .btn-primary {
@@ -126,17 +143,19 @@ button {
 }
 
 .btn-primary:hover {
-    background-color: var(--color-secondary);
+    background-color: #475569;
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
     background-color: transparent;
     color: var(--color-primary);
-    border: 1px solid var(--color-border);
+    border: 1.5px solid var(--color-border);
 }
 
 .btn-secondary:hover {
     border-color: var(--color-primary);
+    background-color: var(--color-bg-alt);
 }
 
 /* ========================================
@@ -181,11 +200,29 @@ button {
 .nav-link {
     font-size: 0.9rem;
     color: var(--color-text-light);
+    transition: color var(--transition-base);
+    position: relative;
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--color-primary);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: width var(--transition-base);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
 }
 
 .nav-toggle {
@@ -246,7 +283,8 @@ button {
 .hero-name {
     font-size: 3rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal */
     line-height: 1.2;
     margin-bottom: var(--spacing-sm);
 }
@@ -279,10 +317,12 @@ button {
 .hero-social a {
     font-size: 1.25rem;
     color: var(--color-text-muted);
+    transition: all var(--transition-base);
 }
 
 .hero-social a:hover {
-    color: var(--color-primary);
+    color: var(--color-accent);
+    transform: translateY(-2px);
 }
 
 /* ========================================
@@ -303,7 +343,7 @@ button {
     width: 250px;
     height: 250px;
     border-radius: var(--radius-md);
-    background-color: var(--color-bg);
+    background-color: #ffffff;
     border: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
@@ -340,7 +380,8 @@ button {
     display: block;
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal */
 }
 
 .stat-label {
@@ -376,27 +417,29 @@ button {
     top: 5px;
     width: 10px;
     height: 10px;
-    background-color: var(--color-primary);
+    background-color: var(--color-accent);
     border-radius: 50%;
 }
 
 .timeline-content {
-    background-color: var(--color-bg-alt);
+    background-color: #ffffff;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
 }
 
 .timeline-date {
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--color-accent);
+    color: var(--color-success);
     margin-bottom: var(--spacing-xs);
 }
 
 .timeline-title {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal */
     margin-bottom: var(--spacing-xs);
 }
 
@@ -425,16 +468,24 @@ button {
 }
 
 .skill-category {
-    background-color: var(--color-bg);
+    background-color: #ffffff;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
+}
+
+.skill-category:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.12);
 }
 
 .skill-category-title {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #4b5563;
+    /* Refined gray */
     margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;
@@ -443,6 +494,7 @@ button {
 
 .skill-category-title i {
     color: var(--color-accent);
+    font-size: 1rem;
 }
 
 .skill-list {
@@ -457,6 +509,18 @@ button {
     border-radius: var(--radius-sm);
     font-size: 0.85rem;
     color: var(--color-text-light);
+    transition: all var(--transition-base);
+    cursor: default;
+    border: 1px solid transparent;
+}
+
+.skill-list li:hover {
+    background-color: #ccfbf1;
+    /* Matches bg-alt */
+    color: #0d9488;
+    /* Teal text */
+    border-color: var(--color-accent);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* ========================================
@@ -468,19 +532,23 @@ button {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-lg);
+    max-width: 800px;
 }
 
 .project-card {
-    background-color: var(--color-bg);
+    background-color: #ffffff;
     border-radius: var(--radius-md);
     overflow: hidden;
     border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
 }
 
 .project-card:hover {
-    border-color: var(--color-text-muted);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.1);
+    transform: translateY(-2px);
 }
 
 .project-image {
@@ -510,8 +578,27 @@ button {
 .project-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal */
     margin-bottom: var(--spacing-sm);
+}
+
+.project-title.featured {
+    color: var(--color-accent);
+    font-size: 1.25rem;
+    position: relative;
+    padding-left: 12px;
+}
+
+.project-title.featured::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    bottom: 2px;
+    width: 3px;
+    background-color: var(--color-accent);
+    border-radius: 2px;
 }
 
 .project-description {
@@ -543,14 +630,19 @@ button {
 
 .project-link {
     font-size: 0.85rem;
-    color: var(--color-text-light);
-    display: flex;
+    color: white;
+    display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
+    transition: all var(--transition-base);
+    background-color: var(--color-accent);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
 }
 
 .project-link:hover {
-    color: var(--color-primary);
+    background-color: #0f766e;
+    transform: translateY(-1px);
 }
 
 .project-placeholder-card {
@@ -588,11 +680,17 @@ button {
 }
 
 .certificate-card {
-    background-color: var(--color-bg);
+    background-color: #ffffff;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
     text-align: center;
+    transition: all var(--transition-base);
+}
+
+.certificate-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
 }
 
 .certificate-icon {
@@ -604,7 +702,8 @@ button {
 .certificate-title {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: #374151;
+    /* Classic charcoal */
     margin-bottom: var(--spacing-xs);
 }
 
@@ -622,6 +721,11 @@ button {
 
 .certificate-link {
     font-size: 0.85rem;
+    color: var(--color-success);
+    transition: color var(--transition-base);
+}
+
+.certificate-link:hover {
     color: var(--color-accent);
 }
 
@@ -680,10 +784,12 @@ button {
 .contact-social a {
     font-size: 1.25rem;
     color: var(--color-text-muted);
+    transition: all var(--transition-base);
 }
 
 .contact-social a:hover {
-    color: var(--color-primary);
+    color: var(--color-accent);
+    transform: translateY(-2px);
 }
 
 .contact-form {
@@ -756,7 +862,8 @@ button {
 }
 
 .footer-credit i {
-    color: #dc2626;
+    color: #f43f5e;
+    /* Subtle rose red */
 }
 
 /* ========================================
@@ -778,6 +885,12 @@ button {
     opacity: 0;
     visibility: hidden;
     z-index: 999;
+    transition: all var(--transition-base);
+}
+
+.back-to-top:hover {
+    background-color: var(--color-accent);
+    transform: scale(1.05);
 }
 
 .back-to-top.visible {
