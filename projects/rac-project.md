@@ -150,7 +150,7 @@ TRAIN INITIALIZED → JOURNEY PROGRESSES → SYSTEM SCANS FOR VACANCIES
 
 ---
 
-## Quick Interview Answer
+## Quick Answer
 
 > "In Indian Railways, RAC passengers share a berth and are eligible for upgrades when berths become vacant. The problem is that upgrades are handled manually and often missed.
 >
