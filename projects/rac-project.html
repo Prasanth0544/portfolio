@@ -196,35 +196,78 @@
         <!-- Architecture Diagram -->
         <section class="section">
             <h2>Architecture Diagram</h2>
-            <div class="architecture-card">
-                <pre class="architecture-diagram">
-┌─────────────────────────────────────────────────────────────────┐
-│                    RAC REALLOCATION SYSTEM                      │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐      │
-│  │ Admin Portal │  │  TTE Portal  │  │ Passenger Portal │      │
-│  │  (React 19)  │  │  (React 19)  │  │    (React 19)    │      │
-│  │  Port 3000   │  │  Port 5174   │  │    Port 5175     │      │
-│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘      │
-│         │                 │                    │                │
-│         └─────────────────┼────────────────────┘                │
-│                           │                                     │
-│                    ┌──────▼──────┐                              │
-│                    │   Backend   │                              │
-│                    │ Express.js  │◄────── WebSocket (ws)        │
-│                    │  Port 5000  │◄────── Web Push (VAPID)      │
-│                    │  84 APIs    │                              │
-│                    └──────┬──────┘                              │
-│                           │                                     │
-│                    ┌──────▼──────┐                              │
-│                    │   MongoDB   │                              │
-│                    │ - Stations  │                              │
-│                    │ - Passengers│                              │
-│                    │ - Auth      │                              │
-│                    └─────────────┘                              │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+            <div class="architecture-visual">
+                <div class="arch-header">
+                    <h3 class="arch-title">RAC REALLOCATION SYSTEM</h3>
+                </div>
+
+                <div class="arch-portals">
+                    <div class="arch-portal admin">
+                        <div class="portal-icon">🔐</div>
+                        <div class="portal-name">Admin Portal</div>
+                        <div class="portal-tech">React 19</div>
+                        <div class="portal-port">Port 3000</div>
+                    </div>
+                    <div class="arch-portal tte">
+                        <div class="portal-icon">👮</div>
+                        <div class="portal-name">TTE Portal</div>
+                        <div class="portal-tech">React 19</div>
+                        <div class="portal-port">Port 5174</div>
+                    </div>
+                    <div class="arch-portal passenger">
+                        <div class="portal-icon">🎫</div>
+                        <div class="portal-name">Passenger Portal</div>
+                        <div class="portal-tech">React 19</div>
+                        <div class="portal-port">Port 5175</div>
+                    </div>
+                </div>
+
+                <div class="arch-connector-down">
+                    <svg viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M50,0 C50,30 200,30 200,60" fill="none" stroke="currentColor" stroke-width="2" />
+                        <path d="M200,0 L200,60" fill="none" stroke="currentColor" stroke-width="2" />
+                        <path d="M350,0 C350,30 200,30 200,60" fill="none" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+
+                <div class="arch-backend">
+                    <div class="backend-box">
+                        <div class="backend-icon">⚙️</div>
+                        <div class="backend-name">Backend</div>
+                        <div class="backend-tech">Express.js</div>
+                        <div class="backend-port">Port 5000</div>
+                        <div class="backend-apis">84 APIs</div>
+                    </div>
+                    <div class="backend-features">
+                        <div class="feature-tag ws">
+                            <span class="tag-icon">🔄</span>
+                            WebSocket (ws)
+                        </div>
+                        <div class="feature-tag push">
+                            <span class="tag-icon">🔔</span>
+                            Web Push (VAPID)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector-single">
+                    <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+                        <path d="M50,0 L50,40" fill="none" stroke="currentColor" stroke-width="2" />
+                        <polygon points="45,35 55,35 50,40" fill="currentColor" />
+                    </svg>
+                </div>
+
+                <div class="arch-database">
+                    <div class="db-box">
+                        <div class="db-icon">🗄️</div>
+                        <div class="db-name">MongoDB</div>
+                        <div class="db-collections">
+                            <span>Stations</span>
+                            <span>Passengers</span>
+                            <span>Auth</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -259,12 +302,12 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
             <div class="algorithm-grid">
                 <div class="algorithm-card">
                     <h3>RAC Priority System</h3>
-                    <p class="algorithm-subtitle">First-Come-First-Serve</p>
+                    <p class="algorithm-subtitle">RAC Number Priority (Ascending Order)</p>
                     <div class="priority-list">
-                        <div class="priority-item highest">RAC 1 → Upgraded First</div>
-                        <div class="priority-item">RAC 2 → Upgraded Second</div>
-                        <div class="priority-item">RAC 3 → Upgraded Third</div>
-                        <div class="priority-item lowest">...</div>
+                        <div class="priority-item highest">RAC-1 → Highest Priority (Upgraded First)</div>
+                        <div class="priority-item">RAC-2 → Upgraded Second</div>
+                        <div class="priority-item">RAC-3 → Upgraded Third</div>
+                        <div class="priority-item lowest">And so on...</div>
                     </div>
                 </div>
 
@@ -404,7 +447,7 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
                 </div>
                 <div class="data-card">
                     <span class="data-label">Route</span>
-                    <span class="data-value">Narasapur → Secunderabad</span>
+                    <span class="data-value">Narasapur → Hubballi Junction</span>
                 </div>
             </div>
         </section>
@@ -570,7 +613,7 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
                 <li>Multi-language support (Hindi, Telugu)</li>
                 <li>Integration with actual IRCTC APIs</li>
                 <li>Analytics dashboard with Power BI</li>
-                <li>Multi train access</li>
+                <li class="highlight">Multi train access</li>
             </ul>
         </section>
 
