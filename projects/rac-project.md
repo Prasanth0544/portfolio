@@ -194,8 +194,11 @@ RAC 3                    → Upgraded Third
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
 │  Services:      ████████████████████████████░░░ 88.37%         │
+│                                                                │
 │  Reallocation:  █████████████████████████████░░ 89.71%         │
+│                                                                │
 │  Utils:         ██████████████████░░░░░░░░░░░░░ 71.55%         │
+│                                                                │
 │  Controllers:   █████████████████░░░░░░░░░░░░░░ 68.58%         │
 │                                                                │
 │  Total Tests: 1,153 | Test Suites: 50 | All Passing ✅         │
@@ -287,7 +290,7 @@ RAC 3                    → Upgraded Third
 
 ## **Project Links**
 
-- **GitHub Repository**:https://github.com/Prasanth0544/poratls_of_rac   
+- **GitHub Repository**: https://github.com/Prasanth0544/poratls_of_rac   
 
 ---
 
