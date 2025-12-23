@@ -776,6 +776,29 @@ button {
     width: 18px;
 }
 
+/* Clickable contact button styles */
+.contact-link-btn {
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    background-color: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.contact-link-btn:hover {
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+}
+
+.contact-link-btn:hover i {
+    color: white;
+}
+
 .contact-social {
     display: flex;
     gap: var(--spacing-md);
