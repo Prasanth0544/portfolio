@@ -1,161 +1,301 @@
-# RAC Reallocation System
+# 🚂 RAC Reallocation System - Portfolio Summary
 
 ---
 
-## Real-World Context: What is RAC?
+## **Project Title**
+**Real-Time Railway RAC Seat Reallocation System**
 
-RAC (Reservation Against Cancellation) is a booking status in Indian Railways where two passengers share a single berth. If a confirmed passenger cancels or does not board the train, RAC passengers are eligible for berth upgrades. However, upgrades are often delayed or missed due to manual verification by TTEs (Travelling Ticket Examiners).
-
----
-
-## Problems in the Existing RAC System
-
-- No real-time detection of no-show passengers
-- No detection of vacant journey segments
-- Manual and delayed seat reallocation by TTEs
-- RAC upgrades depend entirely on human intervention
-- Passengers often miss upgrades despite vacant berths
-- No automated notification or response mechanism
+## **Project Type**
+Full-Stack Web Application | MERN Stack
 
 ---
 
-## How My System Improves RAC Reallocation
-
-- **Detects vacant segments in real-time** - not just no-shows, but any vacant berth segments
-- **Segment-based vacancy matching** - identifies exactly which journey segments are vacant
-- Automatically identifies eligible RAC passengers based on journey overlap
-- Sends instant upgrade offers with a response timer
-- Updates all systems (Admin, TTE, Passenger) in real-time via WebSocket
+## **Problem Statement**
+Indian Railways operates a Reservation Against Cancellation (RAC) system where passengers get partial berths. When confirmed passengers don't show up, their berths remain vacant throughout the journey while RAC passengers continue sitting. There's no automated system to dynamically upgrade RAC passengers to these vacant berths in real-time.
 
 ---
 
-## Key Innovation: Segment-Based Vacancy Detection
+## **Solution**
+Built a complete **real-time seat reallocation system** that:
+- Detects vacant berths when passengers are marked as no-shows
+- Automatically identifies eligible RAC passengers using priority-based algorithms
+- Implements a dual-approval workflow (TTE approval → Passenger confirmation)
+- Delivers instant push notifications to passengers for upgrade offers
+- Tracks segment-based occupancy allowing the same berth to serve multiple passengers on non-overlapping routes
 
-Unlike traditional systems that only track full-journey vacancies, my system tracks **per-segment occupancy**:
+---
+
+## **Technical Highlights**
+
+| Metric | Value |
+|--------|-------|
+| **Lines of Code** | 40,000+ |
+| **REST API Endpoints** | 84 (39 GET, 45 POST) |
+| **Unit/Integration Tests** | 1,153 tests |
+| **Test Coverage** | 79.57% |
+| **Portals Built** | 3 (Admin, TTE, Passenger) |
+| **Real-time Features** | WebSocket broadcasting |
+| **Notification Types** | Push, Email, In-App |
+
+---
+
+## **Technology Stack**
+
+| Layer | Technologies |
+|-------|--------------|
+| **Backend** | Node.js, Express.js 4.18, MongoDB 6.3 |
+| **Frontend** | React 19, Vite 6.4/7.2, Material-UI 7, TypeScript |
+| **Real-time** | WebSocket (ws), Web Push API (VAPID) |
+| **Authentication** | JWT with refresh tokens, bcrypt, CSRF protection |
+| **Testing** | Jest 30, Supertest, 50 test suites |
+| **Documentation** | Swagger/OpenAPI |
+| **DevOps** | Docker support, Nodemon |
+
+---
+
+## **Key Features Implemented**
+
+### 🎫 **Passenger Portal** (10 pages)
+- IRCTC-style login with JWT authentication
+- Real-time upgrade offers with countdown timers
+- Accept/deny upgrade functionality
+- QR code boarding pass generation
+- Push notifications (works even when browser is closed)
+
+### 👮 **TTE (Staff) Portal** (17 pages)
+- Role-based access control (TTE, Admin roles)
+- Passenger verification and no-show marking
+- RAC reallocation approval workflow
+- Action history with undo capability
+- Station-by-station journey progression
+
+### 🔐 **Admin Portal** (23 pages)
+- Dynamic train initialization from MongoDB
+- Interactive 9-coach × 72-berth visualization
+- Segment-based occupancy matrix
+- RAC queue priority management
+- Real-time statistics dashboard
+
+### ⚙️ **Backend API** (84 endpoints)
+- RESTful API architecture
+- WebSocket real-time broadcasting
+- Automatic data cleanup on server restart
+- Multi-train support architecture
+- Comprehensive input validation & sanitization
+
+---
+
+## **Architecture Diagram**
 
 ```
-BERTH S1-15 Occupancy:
-┌─────────────────────────────────────────────────────────────┐
-│ Station:  1    2    3    4    5    6    7    8    9   10    │
-├─────────────────────────────────────────────────────────────┤
-│ Segment:  ████████████████░░░░░░░░░░░░░░░█████████████████  │
-│           Passenger A      VACANT        Passenger B        │
-│           (Stn 1→5)       (Stn 5→7)      (Stn 7→10)         │
-└─────────────────────────────────────────────────────────────┘
-
-RAC Passenger traveling Stn 4→8 can be upgraded for segments 5→7!
-```
-
-**This means:**
-- Same berth can have multiple passengers on non-overlapping segments
-- Vacant "gaps" in the middle of a journey are detected
-- RAC passengers are matched based on journey segment overlap
-
----
-
-## System Flow
-
-```
-TRAIN INITIALIZED → JOURNEY PROGRESSES → SYSTEM SCANS FOR VACANCIES
-                                                    ↓
-                           ┌────────────────────────────────────┐
-                           │     VACANCY SOURCES:                │
-                           │  1. No-show passengers              │
-                           │  2. Partial journey segments        │
-                           │  3. Pre-existing gaps               │
-                           └────────────────────────────────────┘
-                                                    ↓
-           PASSENGER ACCEPTS ← UPGRADE OFFER SENT ← ELIGIBLE RAC FOUND
-                   ↓
-           STATUS: RAC → CONFIRMED (Real-time update to all portals)
-```
-
-**Step-by-Step:**
-
-1. **Admin configures train** - coaches, berths, stations, passengers
-2. **Journey progresses** - system tracks current station
-3. **TTE marks no-shows** - creates vacancy for remaining journey
-4. **System scans all berths** - finds vacant segments at current station
-5. **Matches RAC passengers** - journey must overlap with vacant segment
-6. **Push notification sent** - upgrade offer with countdown timer
-7. **Passenger responds** - Accept → RAC becomes Confirmed
-8. **Real-time broadcast** - all portals update instantly
-
----
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      FRONTEND                                │
-├────────────────┬────────────────┬────────────────────────────┤
-│  Admin Portal  │   TTE Portal   │    Passenger Portal        │
-│  (Port 5173)   │   (Port 5174)  │    (Port 5175)             │
-│                │                │                            │
-│  - Configure   │  - Verify      │  - View status             │
-│  - Monitor     │  - Mark no-show│  - Accept upgrades         │
-│  - Manage      │  - Approve     │  - Notifications           │
-└────────────────┴────────────────┴────────────────────────────┘
-                            │
-                   REST API + WebSocket
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                 BACKEND (Port 5000)                          │
-│                 Node.js + Express                            │
-│                                                              │
-│  - 30+ API endpoints                                         │
-│  - WebSocket for real-time updates                          │
-│  - Segment-based vacancy detection                          │
-│  - Push notifications (Web Push, Email, SMS)                │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                      MongoDB                                 │
-│  - trainState (coaches, berths, segmentOccupancy[])         │
-│  - passengers (bookings, fromIdx, toIdx)                    │
-│  - notifications (upgrade offers)                           │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    RAC REALLOCATION SYSTEM                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐      │
+│  │ Admin Portal │  │  TTE Portal  │  │ Passenger Portal │      │
+│  │  (React 19)  │  │  (React 19)  │  │    (React 19)    │      │
+│  │  Port 3000   │  │  Port 5174   │  │    Port 5175     │      │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘      │
+│         │                 │                    │                │
+│         └─────────────────┼────────────────────┘                │
+│                           │                                     │
+│                    ┌──────▼──────┐                              │
+│                    │   Backend   │                              │
+│                    │ Express.js  │◄────── WebSocket (ws)        │
+│                    │  Port 5000  │◄────── Web Push (VAPID)      │
+│                    │  84 APIs    │                              │
+│                    └──────┬──────┘                              │
+│                           │                                     │
+│                    ┌──────▼──────┐                              │
+│                    │   MongoDB   │                              │
+│                    │ - Stations  │                              │
+│                    │ - Passengers│                              │
+│                    │ - Auth      │                              │
+│                    └─────────────┘                              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Technology Stack
+## **Core Innovation: Segment-Based Occupancy**
 
-### Backend
-| Technology | Purpose |
-|------------|---------|
-| Node.js + Express | REST API server |
-| MongoDB + Mongoose | Database with segment arrays |
-| WebSocket (ws) | Real-time communication |
-| JWT + bcrypt | Authentication |
-| Web Push / Nodemailer / Twilio | Notifications |
+Unlike traditional berth booking systems, I implemented **segment-based tracking** that maximizes berth utilization:
 
-### Frontend (3 Portals)
-| Technology | Purpose |
-|------------|---------|
-| React 19 + Vite | UI framework |
-| TypeScript | Type safety |
-| Material UI | Components |
+```
+Berth S1-15 Journey: Vijayawada → Visakhapatnam (12 stations)
 
----
+Station:     1    2    3    4    5    6    7    8    9   10   11   12
+Segment:    [S1] [S2] [S3] [S4] [S5] [S6] [S7] [S8] [S9] [S10][S11][--]
 
-## What Each Portal Does
+Passenger A: ████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+             (Boarding: Stn 1, Deboarding: Stn 5)
 
-**Admin Portal** - Configure trains, manage passengers, view segment occupancy visualization
+Passenger B: ░░░░░░░░░░░░░░░░░░░░████████████████████░░░░░░░░░░░░░░░░
+             (Boarding: Stn 5, Deboarding: Stn 9)
 
-**TTE Portal** - Verify boarding, mark no-shows, approve reallocation requests
+RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████████████████
+             (Upgraded at Stn 9, travels to Stn 12)
+```
 
-**Passenger Portal** - View status, receive upgrade offers, accept/deny with timer
+**Result**: Same physical berth efficiently used by 3 different passengers!
 
 ---
 
-## Quick Answer
+## **Reallocation Algorithm**
 
-> "In Indian Railways, RAC passengers share a berth and are eligible for upgrades when berths become vacant. The problem is that upgrades are handled manually and often missed.
->
-> I built a real-time MERN-based system that tracks **per-segment berth occupancy** - so it detects not just no-shows, but any vacant journey segments. When a vacancy is found, the system automatically matches eligible RAC passengers based on journey overlap and sends instant upgrade offers with real-time notifications."
+### RAC Priority System (First-Come-First-Serve)
+```
+RAC 1 (Highest Priority) → Upgraded First
+RAC 2                    → Upgraded Second
+RAC 3                    → Upgraded Third
+...
+```
+
+### Dual-Approval Workflow
+```
+1. Berth becomes vacant (passenger no-show)
+         ↓
+2. System identifies eligible RAC passengers
+         ↓
+3. TTE approves reallocation from TTE Portal
+         ↓
+4. Passenger receives push notification
+         ↓
+5. Passenger accepts/denies within timeout
+         ↓
+6. If accepted → RAC status upgraded to CNF
+   If denied  → Offer goes to next RAC passenger
+```
 
 ---
 
-*Built with MERN Stack (MongoDB, Express, React, Node.js)*
+## **Security Implementation**
+
+| Security Feature | Implementation |
+|-----------------|----------------|
+| **Authentication** | JWT with 1-hour expiry + 7-day refresh tokens |
+| **Authorization** | Role-based access control (Admin, TTE, Passenger) |
+| **CSRF Protection** | Double-submit cookie pattern |
+| **Rate Limiting** | 5 login attempts/15min, 100 general/15min |
+| **Input Validation** | Joi/Zod schema validation |
+| **XSS Prevention** | Input sanitization, HTML escaping |
+| **Password Security** | bcrypt with salt rounds |
+| **Token Refresh** | Automatic token refresh on 401 errors |
+
+---
+
+## **Test Coverage**
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                    TEST COVERAGE: 79.57%                       │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  Services:      ████████████████████████████░░░ 88.37%         │
+│  Reallocation:  █████████████████████████████░░ 89.71%         │
+│  Utils:         ██████████████████░░░░░░░░░░░░░ 71.55%         │
+│  Controllers:   █████████████████░░░░░░░░░░░░░░ 68.58%         │
+│                                                                │
+│  Total Tests: 1,153 | Test Suites: 50 | All Passing ✅         │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## **Real-World Data Model**
+
+| Train Data | Value |
+|------------|-------|
+| **Train Model** | 17225 Amaravathi Express |
+| **Coaches** | 9 Sleeper + 3A AC coaches |
+| **Berths per Coach** | 72 (Sleeper) / 64 (3A AC) |
+| **Total Passengers** | 648+ passengers |
+| **Stations** | 28 stops |
+| **Route** | Narasapur → Secunderabad |
+| **Journey Duration** | ~18 hours |
+
+---
+
+## **API Categories**
+
+| Category | Endpoints | Used For |
+|----------|-----------|----------|
+| **Authentication** | 6 | Login, logout, token refresh, verify |
+| **Train Management** | 8 | Initialize, start, next station, reset |
+| **Passenger Operations** | 15 | Search, CRUD, no-show, boarding |
+| **Reallocation** | 12 | Eligibility, approve, reject, pending |
+| **TTE Operations** | 18 | Dashboard, actions, history, undo |
+| **Visualization** | 8 | Segment matrix, heatmap, graphs |
+| **Notifications** | 10 | Push subscribe, upgrade offers, alerts |
+| **Config/Misc** | 7 | Setup, health, CSRF token |
+
+---
+
+## **Skills Demonstrated**
+
+### Backend Development
+- RESTful API design (84 endpoints)
+- Real-time WebSocket implementation
+- MongoDB database modeling
+- JWT authentication with refresh tokens
+- Rate limiting and security middleware
+
+### Frontend Development
+- React 19 with hooks and context
+- TypeScript for type safety
+- Material-UI component library
+- Responsive design for mobile/desktop
+- WebSocket client integration
+
+### Testing & Quality
+- Jest unit testing (1,153 tests)
+- Integration testing with Supertest
+- 79.57% code coverage
+- Test-driven development approach
+
+### DevOps & Tools
+- Docker containerization
+- Git version control
+- Swagger API documentation
+- Environment configuration
+
+---
+
+## **What I Learned**
+
+1. **Segment-Based Data Modeling** - Complex occupancy tracking across journey segments
+2. **Real-Time Systems** - WebSocket and Push Notification implementation
+3. **Dual-Approval Workflows** - Multi-party confirmation systems
+4. **Security Best Practices** - JWT refresh, CSRF, rate limiting
+5. **Large-Scale Testing** - Achieving high coverage with 1,153 tests
+6. **Full-Stack Integration** - Seamless communication between 4 applications
+
+---
+
+## **Future Enhancements**
+
+- [ ] Mobile app using React Native
+- [ ] AI-based prediction for no-shows
+- [ ] Multi-language support (Hindi, Telugu)
+- [ ] Integration with actual IRCTC APIs
+- [ ] Analytics dashboard with Power BI
+- [ ] Multi train acess
+---
+
+## **Project Links**
+
+- **GitHub Repository**:https://github.com/Prasanth0544/poratls_of_rac   
+
+---
+
+**Developed by**: Prasanth Gannavarapu
+**Email**: prasanthgannavarapu5@gmail.com 
+**LinkedIn**: https://www.linkedin.com/in/prasanth-gannavarapu-9516242a0
+**Last Updated**: December 2024
+
+---
+
+*Built for Indian Railways - Train 17225 Amaravathi Express* 🚂
