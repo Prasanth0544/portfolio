@@ -5,12 +5,70 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all functionality
+    initTheme();
+    initTypingAnimation();
     initNavigation();
     initScrollEffects();
     initAnimations();
     initContactForm();
     setCurrentYear();
 });
+
+/**
+ * Theme Switcher (Dark Mode)
+ */
+function initTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const icon = themeToggle.querySelector('i');
+    
+    // Check for saved theme preference or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.body.setAttribute('data-theme', 'dark');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+
+    // Toggle theme on click
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            document.body.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            document.body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    });
+}
+
+/**
+ * Typing Animation for Hero Section
+ */
+function initTypingAnimation() {
+    const textElement = document.querySelector('.typing-text');
+    if (!textElement) return;
+
+    const textToType = 'Full Stack Developer';
+    let charIndex = 0;
+    
+    function type() {
+        if (charIndex < textToType.length) {
+            textElement.textContent += textToType.charAt(charIndex);
+            charIndex++;
+            setTimeout(type, 100);
+        }
+    }
+    
+    // Start typing after a short delay
+    setTimeout(type, 500);
+}
 
 /**
  * Navigation functionality
@@ -88,17 +146,87 @@ function initScrollEffects() {
 }
 
 /**
- * Fade-in animations on scroll
+ * Classical animations on scroll with variety
  */
 function initAnimations() {
-    // Add fade-in class to animated elements
-    const animatedElements = document.querySelectorAll(
+    // Define animation mappings for different elements
+    const animationMap = [
+        // Section titles - slide in from left
+        { selector: '.section-title', animation: 'slide-in-left' },
+        
+        // About section - slide in from right
+        { selector: '.about-content', animation: 'slide-in-right' },
+        { selector: '.about-image', animation: 'scale-in' },
+        { selector: '.about-text', animation: 'fade-in' },
+        { selector: '.stat-item', animation: 'bounce-in' },
+        
+        // Timeline items - staggered slide up
+        { selector: '.timeline-item:nth-child(1)', animation: 'slide-in-up stagger-1' },
+        { selector: '.timeline-item:nth-child(2)', animation: 'slide-in-up stagger-2' },
+        { selector: '.timeline-item:nth-child(3)', animation: 'slide-in-up stagger-3' },
+        
+        // Skills - scale in with stagger
+        { selector: '.skill-category:nth-child(1)', animation: 'scale-in stagger-1' },
+        { selector: '.skill-category:nth-child(2)', animation: 'scale-in stagger-2' },
+        { selector: '.skill-category:nth-child(3)', animation: 'scale-in stagger-3' },
+        { selector: '.skill-category:nth-child(4)', animation: 'scale-in stagger-4' },
+        
+        // Projects - flip in
+        { selector: '.project-card:nth-child(1)', animation: 'flip-in stagger-1' },
+        { selector: '.project-card:nth-child(2)', animation: 'flip-in stagger-2' },
+        
+        // Certificates - zoom in
+        { selector: '.certificate-card:nth-child(1)', animation: 'zoom-in stagger-1' },
+        { selector: '.certificate-card:nth-child(2)', animation: 'zoom-in stagger-2' },
+        { selector: '.certificate-card:nth-child(3)', animation: 'zoom-in stagger-3' },
+        
+        // Contact - fade blur
+        { selector: '.contact-content', animation: 'fade-blur' },
+        { selector: '.contact-item', animation: 'slide-in-left' },
+        
+        // Hero elements - special entrance
+        { selector: '.hero-greeting', animation: 'fade-in' },
+        { selector: '.hero-name', animation: 'slide-in-up' },
+        { selector: '.hero-title', animation: 'fade-in stagger-2' },
+        { selector: '.hero-description', animation: 'fade-blur stagger-3' },
+        { selector: '.hero-buttons', animation: 'scale-in stagger-4' },
+        { selector: '.hero-social a', animation: 'bounce-in' },
+    ];
+
+    // Apply animations
+    animationMap.forEach(({ selector, animation }) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((el, index) => {
+            // Add animation classes
+            const animClasses = animation.split(' ');
+            animClasses.forEach(animClass => {
+                if (animClass.startsWith('stagger-')) {
+                    el.classList.add(animClass);
+                } else {
+                    el.classList.add(animClass);
+                }
+            });
+        });
+    });
+
+    // Fallback: Apply fade-in to common elements that weren't mapped
+    const fallbackElements = document.querySelectorAll(
         '.section-title, .about-content, .timeline-item, .skill-category, ' +
         '.project-card, .certificate-card, .contact-content'
     );
-
-    animatedElements.forEach(el => {
-        el.classList.add('fade-in');
+    
+    fallbackElements.forEach(el => {
+        // Only add fade-in if no other animation class exists
+        if (!el.classList.contains('slide-in-left') && 
+            !el.classList.contains('slide-in-right') && 
+            !el.classList.contains('slide-in-up') && 
+            !el.classList.contains('scale-in') && 
+            !el.classList.contains('zoom-in') && 
+            !el.classList.contains('flip-in') && 
+            !el.classList.contains('bounce-in') && 
+            !el.classList.contains('fade-blur')) {
+            el.classList.add('fade-in');
+        }
     });
 
     // Intersection Observer for animations
@@ -111,13 +239,43 @@ function initAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                // For bounce-in and elastic-in, trigger animation
+                if (entry.target.classList.contains('bounce-in') || 
+                    entry.target.classList.contains('elastic-in')) {
+                    // Animation is handled by CSS keyframes
+                }
             }
         });
     }, observerOptions);
 
-    animatedElements.forEach(el => {
+    // Observe all animated elements
+    const allAnimatedElements = document.querySelectorAll(
+        '.fade-in, .slide-in-left, .slide-in-right, .slide-in-up, .slide-in-down, ' +
+        '.scale-in, .zoom-in, .rotate-in, .flip-in, .bounce-in, .elastic-in, .fade-blur'
+    );
+
+    allAnimatedElements.forEach(el => {
         observer.observe(el);
     });
+
+    // Add pulse animation to social icons on hover
+    const socialIcons = document.querySelectorAll('.hero-social a, .contact-social a');
+    socialIcons.forEach(icon => {
+        icon.addEventListener('mouseenter', function() {
+            this.classList.add('pulse');
+        });
+        icon.addEventListener('mouseleave', function() {
+            this.classList.remove('pulse');
+        });
+    });
+
+    // Add float animation to hero icon
+    const heroIcon = document.querySelector('.hero-greeting');
+    if (heroIcon) {
+        setTimeout(() => {
+            heroIcon.classList.add('float');
+        }, 1000);
+    }
 }
 
 /**
