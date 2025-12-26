@@ -989,6 +989,49 @@ body {
     margin: 0;
 }
 
+/* ===== Limitations Grid ===== */
+.limitations-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.limitation-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.limitation-number {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.limitation-content strong {
+    display: block;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+.limitation-content p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin: 0;
+}
+
 /* ===== Future List ===== */
 .future-list {
     list-style: none;
