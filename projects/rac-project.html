@@ -17,8 +17,11 @@
 
 <body>
     <header class="hero">
+        <a href="../index.html" class="back-button" aria-label="Back to portfolio">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
         <div class="hero-content">
-            <span class="hero-icon">🚂</span>
+            <span class="hero-icon" aria-label="Train emoji icon">🚂</span>
             <h1>RAC Reallocation System</h1>
             <p class="subtitle">Real-Time Railway RAC Seat Reallocation System</p>
             <p class="project-type">Full-Stack Web Application | MERN Stack</p>
@@ -26,6 +29,13 @@
     </header>
 
     <main class="container">
+        <!-- Prototype Notice -->
+        <section class="section">
+            <div class="card highlight-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 2rem;">
+                <p style="margin: 0; font-weight: 600;">🎯 <strong>Prototype Project</strong> - Built as a portfolio demonstration of full-stack development capabilities. The system architecture and implementation showcase production-ready patterns and best practices.</p>
+            </div>
+        </section>
+
         <!-- Problem Statement -->
         <section class="section">
             <h2>Problem Statement</h2>
@@ -56,7 +66,7 @@
             <h2>Technical Highlights</h2>
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <span class="metric-value">40,000+</span>
+                    <span class="metric-value">59k+</span>
                     <span class="metric-label">Lines of Code</span>
                 </div>
                 <div class="metric-card">
@@ -133,7 +143,7 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-header">
-                        <span class="feature-icon">🎫</span>
+                        <span class="feature-icon" aria-label="Ticket emoji icon">🎫</span>
                         <h3>Passenger Portal</h3>
                         <span class="feature-badge">10 pages</span>
                     </div>
@@ -148,7 +158,7 @@
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <span class="feature-icon">👮</span>
+                        <span class="feature-icon" aria-label="Police officer emoji icon">👮</span>
                         <h3>TTE (Staff) Portal</h3>
                         <span class="feature-badge">17 pages</span>
                     </div>
@@ -163,7 +173,7 @@
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <span class="feature-icon">🔐</span>
+                        <span class="feature-icon" aria-label="Lock emoji icon">🔐</span>
                         <h3>Admin Portal</h3>
                         <span class="feature-badge">23 pages</span>
                     </div>
@@ -178,7 +188,7 @@
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <span class="feature-icon">⚙️</span>
+                        <span class="feature-icon" aria-label="Gear emoji icon">⚙️</span>
                         <h3>Backend API</h3>
                         <span class="feature-badge">84 endpoints</span>
                     </div>
@@ -203,19 +213,19 @@
 
                 <div class="arch-portals">
                     <div class="arch-portal admin">
-                        <div class="portal-icon">🔐</div>
+                        <div class="portal-icon" aria-label="Lock icon for Admin Portal">🔐</div>
                         <div class="portal-name">Admin Portal</div>
                         <div class="portal-tech">React 19</div>
                         <div class="portal-port">Port 3000</div>
                     </div>
                     <div class="arch-portal tte">
-                        <div class="portal-icon">👮</div>
+                        <div class="portal-icon" aria-label="Police officer icon for TTE Portal">👮</div>
                         <div class="portal-name">TTE Portal</div>
                         <div class="portal-tech">React 19</div>
                         <div class="portal-port">Port 5174</div>
                     </div>
                     <div class="arch-portal passenger">
-                        <div class="portal-icon">🎫</div>
+                        <div class="portal-icon" aria-label="Ticket icon for Passenger Portal">🎫</div>
                         <div class="portal-name">Passenger Portal</div>
                         <div class="portal-tech">React 19</div>
                         <div class="portal-port">Port 5175</div>
@@ -223,7 +233,7 @@
                 </div>
 
                 <div class="arch-connector-down">
-                    <svg viewBox="0 0 400 60" preserveAspectRatio="none">
+                    <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-label="Connection lines from portals to backend">
                         <path d="M50,0 C50,30 200,30 200,60" fill="none" stroke="currentColor" stroke-width="2" />
                         <path d="M200,0 L200,60" fill="none" stroke="currentColor" stroke-width="2" />
                         <path d="M350,0 C350,30 200,30 200,60" fill="none" stroke="currentColor" stroke-width="2" />
@@ -232,7 +242,7 @@
 
                 <div class="arch-backend">
                     <div class="backend-box">
-                        <div class="backend-icon">⚙️</div>
+                        <div class="backend-icon" aria-label="Gear icon for Backend">⚙️</div>
                         <div class="backend-name">Backend</div>
                         <div class="backend-tech">Express.js</div>
                         <div class="backend-port">Port 5000</div>
@@ -240,18 +250,18 @@
                     </div>
                     <div class="backend-features">
                         <div class="feature-tag ws">
-                            <span class="tag-icon">🔄</span>
+                            <span class="tag-icon" aria-label="Sync icon">🔄</span>
                             WebSocket (ws)
                         </div>
                         <div class="feature-tag push">
-                            <span class="tag-icon">🔔</span>
+                            <span class="tag-icon" aria-label="Bell icon">🔔</span>
                             Web Push (VAPID)
                         </div>
                     </div>
                 </div>
 
                 <div class="arch-connector-single">
-                    <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+                    <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-label="Connection line from backend to database">
                         <path d="M50,0 L50,40" fill="none" stroke="currentColor" stroke-width="2" />
                         <polygon points="45,35 55,35 50,40" fill="currentColor" />
                     </svg>
@@ -259,7 +269,7 @@
 
                 <div class="arch-database">
                     <div class="db-box">
-                        <div class="db-icon">🗄️</div>
+                        <div class="db-icon" aria-label="Database icon">🗄️</div>
                         <div class="db-name">MongoDB</div>
                         <div class="db-collections">
                             <span>Stations</span>
@@ -423,8 +433,9 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
 
         <!-- Real-World Data Model -->
         <section class="section">
-            <h2>Real-World Data Model</h2>
-            <div class="data-model-grid">
+            <h2>Real-World SampleData Model</h2>            <div class="card highlight-card" style="margin-bottom: 2rem;">
+                <p><strong>Note:</strong> Built with synthetic passenger data to simulate real-world RAC scenarios while ensuring privacy. The system architecture, business logic, and data structures are designed to handle actual Indian Railways data.</p>
+            </div>            <div class="data-model-grid">
                 <div class="data-card">
                     <span class="data-label">Train Model</span>
                     <span class="data-value">17225 Amaravathi Express</span>
@@ -644,12 +655,38 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
             </ul>
         </section>
 
+        <!-- Live Demo -->
+        <section class="section">
+            <h2>Live Demo</h2>
+            <p class="section-intro">Try the deployed applications:</p>
+            <div class="demo-grid">
+                <a href="https://rac-admin-page.vercel.app" target="_blank" rel="noopener noreferrer" class="demo-card">
+                    <span class="demo-icon" aria-label="Lock icon">🔐</span>
+                    <h3>Admin Portal</h3>
+                    <p class="demo-description">Train initialization, seat visualization & statistics</p>
+                    <span class="demo-link">rac-admin-page.vercel.app →</span>
+                </a>
+                <a href="https://rac-tte.vercel.app" target="_blank" rel="noopener noreferrer" class="demo-card">
+                    <span class="demo-icon" aria-label="Police officer icon">👮</span>
+                    <h3>TTE Portal</h3>
+                    <p class="demo-description">Staff workflow for passenger verification & reallocation</p>
+                    <span class="demo-link">rac-tte.vercel.app →</span>
+                </a>
+                <a href="https://passengerportal.vercel.app/" target="_blank" rel="noopener noreferrer" class="demo-card">
+                    <span class="demo-icon" aria-label="Ticket icon">🎫</span>
+                    <h3>Passenger Portal</h3>
+                    <p class="demo-description">Real-time upgrade offers with push notifications</p>
+                    <span class="demo-link">passengerportal.vercel.app →</span>
+                </a>
+            </div>
+        </section>
+
         <!-- Project Links -->
         <section class="section links-section">
             <h2>Project Links</h2>
             <a href="https://github.com/Prasanth0544/poratls_of_rac" class="project-link" target="_blank"
                 rel="noopener noreferrer">
-                <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+                <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub logo icon">
                     <path
                         d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                 </svg>
@@ -666,7 +703,7 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
             </div>
             <div class="contact-links">
                 <a href="mailto:prasanthgannavarapu5@gmail.com" class="contact-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Email icon">
                         <path
                             d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                     </svg>
@@ -674,7 +711,7 @@ RAC Upgrade: ░░░░░░░░░░░░░░░░░░░░░░�
                 </a>
                 <a href="https://www.linkedin.com/in/prasanth-gannavarapu-9516242a0" target="_blank"
                     rel="noopener noreferrer" class="contact-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="LinkedIn logo icon">
                         <path
                             d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>

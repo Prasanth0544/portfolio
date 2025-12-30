@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     initContactForm();
     setCurrentYear();
+    initKeyboardNavigation();
 });
 
 /**
@@ -21,14 +22,18 @@ function initTheme() {
     const themeToggle = document.getElementById('theme-toggle');
     const icon = themeToggle.querySelector('i');
     
-    // Check for saved theme preference or system preference
+    // Check for saved theme preference - default to light theme
     const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+    if (savedTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
         icon.classList.remove('fa-moon');
         icon.classList.add('fa-sun');
+    } else {
+        // Default to light theme (remove any dark theme attribute)
+        document.body.removeAttribute('data-theme');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
     }
 
     // Toggle theme on click
@@ -430,3 +435,40 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+/**
+ * Keyboard Navigation - Improved Accessibility
+ */
+function initKeyboardNavigation() {
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        // Escape to close mobile menu
+        if (e.key === 'Escape') {
+            const navMenu = document.getElementById('nav-menu');
+            const navToggle = document.getElementById('nav-toggle');
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+        }
+        
+        // Skip to main content with Alt+M
+        if (e.altKey && e.key === 'm') {
+            e.preventDefault();
+            const mainContent = document.querySelector('main') || document.querySelector('section');
+            if (mainContent) {
+                mainContent.focus();
+                mainContent.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+
+    // Improve button focus states
+    const buttons = document.querySelectorAll('button, a[role="button"], .btn');
+    buttons.forEach(button => {
+        button.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                button.click();
+            }
+        });
+    });
+}
