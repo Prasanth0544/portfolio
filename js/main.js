@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypingAnimation();
     initNavigation();
     initScrollEffects();
+    initScrollProgress();
     initAnimations();
     initContactForm();
     setCurrentYear();
@@ -21,10 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function initTheme() {
     const themeToggle = document.getElementById('theme-toggle');
     const icon = themeToggle.querySelector('i');
-    
+
     // Check for saved theme preference - default to light theme
     const savedTheme = localStorage.getItem('theme');
-    
+
     if (savedTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
         icon.classList.remove('fa-moon');
@@ -62,7 +63,7 @@ function initTypingAnimation() {
 
     const textToType = 'Full Stack Developer';
     let charIndex = 0;
-    
+
     function type() {
         if (charIndex < textToType.length) {
             textElement.textContent += textToType.charAt(charIndex);
@@ -70,7 +71,7 @@ function initTypingAnimation() {
             setTimeout(type, 100);
         }
     }
-    
+
     // Start typing after a short delay
     setTimeout(type, 500);
 }
@@ -151,6 +152,19 @@ function initScrollEffects() {
 }
 
 /**
+ * Scroll Progress Indicator
+ */
+function initScrollProgress() {
+    const progressBar = document.getElementById('scroll-progress');
+
+    window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+}
+
+/**
  * Classical animations on scroll with variety
  */
 function initAnimations() {
@@ -158,37 +172,37 @@ function initAnimations() {
     const animationMap = [
         // Section titles - slide in from left
         { selector: '.section-title', animation: 'slide-in-left' },
-        
+
         // About section - slide in from right
         { selector: '.about-content', animation: 'slide-in-right' },
         { selector: '.about-image', animation: 'scale-in' },
         { selector: '.about-text', animation: 'fade-in' },
         { selector: '.stat-item', animation: 'bounce-in' },
-        
+
         // Timeline items - staggered slide up
         { selector: '.timeline-item:nth-child(1)', animation: 'slide-in-up stagger-1' },
         { selector: '.timeline-item:nth-child(2)', animation: 'slide-in-up stagger-2' },
         { selector: '.timeline-item:nth-child(3)', animation: 'slide-in-up stagger-3' },
-        
+
         // Skills - scale in with stagger
         { selector: '.skill-category:nth-child(1)', animation: 'scale-in stagger-1' },
         { selector: '.skill-category:nth-child(2)', animation: 'scale-in stagger-2' },
         { selector: '.skill-category:nth-child(3)', animation: 'scale-in stagger-3' },
         { selector: '.skill-category:nth-child(4)', animation: 'scale-in stagger-4' },
-        
+
         // Projects - flip in
         { selector: '.project-card:nth-child(1)', animation: 'flip-in stagger-1' },
         { selector: '.project-card:nth-child(2)', animation: 'flip-in stagger-2' },
-        
+
         // Certificates - zoom in
         { selector: '.certificate-card:nth-child(1)', animation: 'zoom-in stagger-1' },
         { selector: '.certificate-card:nth-child(2)', animation: 'zoom-in stagger-2' },
         { selector: '.certificate-card:nth-child(3)', animation: 'zoom-in stagger-3' },
-        
+
         // Contact - fade blur
         { selector: '.contact-content', animation: 'fade-blur' },
         { selector: '.contact-item', animation: 'slide-in-left' },
-        
+
         // Hero elements - special entrance
         { selector: '.hero-greeting', animation: 'fade-in' },
         { selector: '.hero-name', animation: 'slide-in-up' },
@@ -219,16 +233,16 @@ function initAnimations() {
         '.section-title, .about-content, .timeline-item, .skill-category, ' +
         '.project-card, .certificate-card, .contact-content'
     );
-    
+
     fallbackElements.forEach(el => {
         // Only add fade-in if no other animation class exists
-        if (!el.classList.contains('slide-in-left') && 
-            !el.classList.contains('slide-in-right') && 
-            !el.classList.contains('slide-in-up') && 
-            !el.classList.contains('scale-in') && 
-            !el.classList.contains('zoom-in') && 
-            !el.classList.contains('flip-in') && 
-            !el.classList.contains('bounce-in') && 
+        if (!el.classList.contains('slide-in-left') &&
+            !el.classList.contains('slide-in-right') &&
+            !el.classList.contains('slide-in-up') &&
+            !el.classList.contains('scale-in') &&
+            !el.classList.contains('zoom-in') &&
+            !el.classList.contains('flip-in') &&
+            !el.classList.contains('bounce-in') &&
             !el.classList.contains('fade-blur')) {
             el.classList.add('fade-in');
         }
@@ -245,7 +259,7 @@ function initAnimations() {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
                 // For bounce-in and elastic-in, trigger animation
-                if (entry.target.classList.contains('bounce-in') || 
+                if (entry.target.classList.contains('bounce-in') ||
                     entry.target.classList.contains('elastic-in')) {
                     // Animation is handled by CSS keyframes
                 }
@@ -266,10 +280,10 @@ function initAnimations() {
     // Add pulse animation to social icons on hover
     const socialIcons = document.querySelectorAll('.hero-social a, .contact-social a');
     socialIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', function() {
+        icon.addEventListener('mouseenter', function () {
             this.classList.add('pulse');
         });
-        icon.addEventListener('mouseleave', function() {
+        icon.addEventListener('mouseleave', function () {
             this.classList.remove('pulse');
         });
     });
@@ -449,7 +463,7 @@ function initKeyboardNavigation() {
             navMenu.classList.remove('active');
             navToggle.classList.remove('active');
         }
-        
+
         // Skip to main content with Alt+M
         if (e.altKey && e.key === 'm') {
             e.preventDefault();
